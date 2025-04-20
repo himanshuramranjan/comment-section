@@ -1,0 +1,77 @@
++-------------------+        +---------------------+        +---------------------+
+|      User         |        |       Video         |        |     ModerationAction|
++-------------------+        +---------------------+        +---------------------+
+| - userId: String  |        | - videoId: String   |        | - actionId: String  |
+| - name: String    |        | - title: String     |        | - moderator: User   |
+| - email: String   |        | - description: String|       | - comment: Comment  |
++-------------------+        +---------------------+        | - reason: String    |
+                                                            | - type: Enum        |
+                                                            | - timestamp: LocalDT|
+                                                            +---------------------+
+
+                               ▲
+                               |
++-----------------------------|-----------------------------+
+|                           Comment                         |
++-----------------------------------------------------------+
+| - commentId: String                                        |
+| - content: String                                          |
+| - author: User                                             |
+| - video: Video                                             |
+| - timestamp: LocalDateTime                                 |
+| - editedTimestamp: LocalDateTime                          |
+| - isDeleted: boolean                                       |
+| - parent: Comment                                          |
+| - replies: List<Comment>                                   |
+| - reactions: List<Reaction>                                |
++-----------------------------------------------------------+
+| + edit(String): void                                       |
+| + delete(): void                                           |
+| + addReply(Comment): void                                  |
+| + addReaction(Reaction): void                              |
++-----------------------------------------------------------+
+
+           ▲                                   ▲
+           | uses                            | uses
+           |                                  |
++----------------------+           +-----------------------+
+|      Reaction        |           | CommentSortingStrategy|
++----------------------+           +-----------------------+
+| - reactionId: String |           | + sort(List<Comment>) |
+| - user: User         |           +-----------------------+
+| - type: Enum         |                ▲       ▲       ▲
+| - timestamp: Date    |                |       |       |
++----------------------+        +------------------------------+
+                                | NewestFirstStrategy           |
+                                +------------------------------+
+                                | TopCommentsStrategy           |
+                                +------------------------------+
+                                | OldestFirstStrategy           |
+                                +------------------------------+
+
++-----------------------------+       +---------------------------+
+|      ICommentService        |<------|  CommentServiceWithStrategy|
++-----------------------------+       +---------------------------+
+| + addComment(...)           |       | - commentStore: Map       |
+| + deleteComment(...)        |       | - sortingStrategy         |
+| + editComment(...)          |       +---------------------------+
+| + getReplies(...)           |       | + setSortingStrategy()    |
++-----------------------------+       +---------------------------+
+
++-----------------------+           +--------------------+
+|   IReactionService    |<----------|   ReactionService  |
++-----------------------+           +--------------------+
+| + addReaction(...)    |           | + addReaction(...) |
++-----------------------+           +--------------------+
+
++-------------------------+         +--------------------------+
+|  IModerationService     |<--------|   ModerationService      |
++-------------------------+         +--------------------------+
+| + moderateComment(...)  |         | + moderateComment(...)   |
++-------------------------+         +--------------------------+
+
++--------------------+       +--------------------+
+|   CommentFactory   |       |  ReactionFactory    |
++--------------------+       +--------------------+
+| + createComment()  |       | + createReaction()  |
++--------------------+       +--------------------+
