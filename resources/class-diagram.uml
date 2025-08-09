@@ -4,6 +4,7 @@
 | - userId: String  |        | - videoId: String   |
 | - name: String    |        | - title: String     |
 | - email: String   |        | - description: String|
+|                   |        | - comments : List<Comment>|
 +-------------------+        +---------------------+
 
                               ▲
