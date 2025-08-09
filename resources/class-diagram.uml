@@ -1,23 +1,19 @@
-+-------------------+        +---------------------+        +---------------------+
-|      User         |        |       Video         |        |     ModerationAction|
-+-------------------+        +---------------------+        +---------------------+
-| - userId: String  |        | - videoId: String   |        | - actionId: String  |
-| - name: String    |        | - title: String     |        | - moderator: User   |
-| - email: String   |        | - description: String|       | - comment: Comment  |
-+-------------------+        +---------------------+        | - reason: String    |
-                                                            | - type: Enum        |
-                                                            | - timestamp: LocalDT|
-                                                            +---------------------+
++-------------------+        +---------------------+
+|      User         |        |       Video         |
++-------------------+        +---------------------+
+| - userId: String  |        | - videoId: String   |
+| - name: String    |        | - title: String     |
+| - email: String   |        | - description: String|
++-------------------+        +---------------------+
 
-                               ▲
-                               |
+                              ▲
+                              |
 +-----------------------------|-----------------------------+
 |                           Comment                         |
 +-----------------------------------------------------------+
 | - commentId: String                                        |
 | - content: String                                          |
-| - author: User                                             |
-| - video: Video                                             |
+| - author: User                                              |
 | - timestamp: LocalDateTime                                 |
 | - editedTimestamp: LocalDateTime                          |
 | - isDeleted: boolean                                       |
@@ -31,9 +27,9 @@
 | + addReaction(Reaction): void                              |
 +-----------------------------------------------------------+
 
-           ▲                                   ▲
+           ▲                                 ▲
            | uses                            | uses
-           |                                  |
+           |                                 |
 +----------------------+           +-----------------------+
 |      Reaction        |           | CommentSortingStrategy|
 +----------------------+           +-----------------------+
@@ -63,15 +59,3 @@
 +-----------------------+           +--------------------+
 | + addReaction(...)    |           | + addReaction(...) |
 +-----------------------+           +--------------------+
-
-+-------------------------+         +--------------------------+
-|  IModerationService     |<--------|   ModerationService      |
-+-------------------------+         +--------------------------+
-| + moderateComment(...)  |         | + moderateComment(...)   |
-+-------------------------+         +--------------------------+
-
-+--------------------+       +--------------------+
-|   CommentFactory   |       |  ReactionFactory    |
-+--------------------+       +--------------------+
-| + createComment()  |       | + createReaction()  |
-+--------------------+       +--------------------+
