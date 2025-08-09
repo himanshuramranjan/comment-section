@@ -8,7 +8,7 @@ import java.util.List;
 
 interface CommentService {
     Comment addComment(String content, User author, Video video, Comment parent);
-    void deleteComment(Comment comment);
+    void privatiseComment(Comment comment);
     void editComment(Comment comment, String newContent);
     List<Comment> getReplies(Comment comment);
 }
