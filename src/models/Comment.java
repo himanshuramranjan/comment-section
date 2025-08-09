@@ -9,22 +9,21 @@ public class Comment {
     private final String commentId;
     private String content;
     private final User author;
-    private final Video video;
     private LocalDateTime timestamp;
-    private boolean isDeleted;
+    private boolean isPrivate;
     private final Comment parent;
     private final List<Comment> replies;
     private final List<Reaction> reactions;
 
-    public Comment(String content, User author, Video video, Comment parent) {
+    public Comment(String content, User author,  Comment parent) {
         this.commentId = UUID.randomUUID().toString();
         this.content = content;
         this.author = author;
-        this.video = video;
         this.parent = parent;
         this.replies = new ArrayList<>();
         this.reactions = new ArrayList<>();
-        this.isDeleted = false;
+        this.isPrivate = false;
+        this.timestamp = LocalDateTime.now();
     }
 
     public void edit(String newContent) {
@@ -32,8 +31,8 @@ public class Comment {
         this.timestamp =  LocalDateTime.now();
     }
 
-    public void delete() {
-        this.isDeleted = true;
+    public void makePrivate() {
+        this.isPrivate = true;
     }
 
     public void addReply(Comment comment) {
@@ -62,5 +61,14 @@ public class Comment {
 
     public List<Reaction> getReactions() {
         return reactions;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "content='" + content + '\'' +
+                ", author=" + author +
+                ", timestamp=" + timestamp +
+                '}';
     }
 }
